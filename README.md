@@ -7,9 +7,8 @@
 ## 폴더 구조
 
 ```text
-coding/
-  senoid_brand_page_demo.html
-  senoid_brand_page_assets/
+index.html
+assets/
 ```
 
 ## 바로 보기
@@ -17,10 +16,10 @@ coding/
 브라우저에서 아래 파일을 열면 데모 페이지를 볼 수 있습니다.
 
 ```text
-D:\code\reverse12\coding\senoid_brand_page_demo.html
+D:\code\reverse12\index.html
 ```
 
-GitHub Pages에서는 루트 `index.html`이 위 데모 페이지로 자동 이동합니다.
+GitHub Pages에서는 루트 `index.html`이 바로 브랜드페이지입니다.
 
 페이지 하단의 `영업담당` 버튼을 누르면 사번/담당자 코드 기반 주문 링크 생성 데모를 볼 수 있습니다.
 

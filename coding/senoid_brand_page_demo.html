@@ -1,0 +1,927 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>REVERSE12 | SENOID Brand Commerce Demo</title>
+  <style>
+    :root {
+      --bg: #f5f7fa;
+      --ink: #13223d;
+      --muted: #68707d;
+      --line: #d9dee7;
+      --soft: #ffffff;
+      --rose: #e86f79;
+      --rose-dark: #9b3140;
+      --gold: #b89a55;
+      --navy: #061a3a;
+      --navy-glow: #103a78;
+      --black: #061a3a;
+      --glass: rgba(255,255,255,.72);
+      --radius: 8px;
+      --shadow: 0 18px 60px rgba(20, 28, 40, .14);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Pretendard", "Noto Sans KR", "Apple SD Gothic Neo", Arial, sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      letter-spacing: 0;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    button, input, select {
+      font: inherit;
+    }
+
+    .nav {
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px clamp(18px, 4vw, 56px);
+      background:
+        radial-gradient(circle at 16% 0%, rgba(49, 103, 181, .72), transparent 34%),
+        linear-gradient(90deg, var(--navy), #07162d 58%, #0c203d);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(184, 154, 85, .32);
+      box-shadow: 0 10px 34px rgba(6, 26, 58, .18);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      color: var(--black);
+    }
+    .brand img {
+      width: 156px;
+      height: auto;
+      display: block;
+      filter: brightness(1.55) contrast(1.18) drop-shadow(0 0 10px rgba(255,255,255,.34));
+    }
+    .brand span {
+      font-size: 12px;
+      color: #dec884;
+      letter-spacing: .08em;
+      white-space: nowrap;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      color: rgba(255,255,255,.78);
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .nav-cta {
+      border: 1px solid rgba(222, 200, 132, .74);
+      background: rgba(222, 200, 132, .12);
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 750;
+    }
+
+    .hero {
+      min-height: 92vh;
+      display: grid;
+      grid-template-columns: minmax(0, 1.02fr) minmax(360px, .98fr);
+      align-items: stretch;
+      padding-top: 70px;
+      background:
+        radial-gradient(circle at 13% 34%, rgba(232,111,121,.18), transparent 28%),
+        radial-gradient(circle at 62% 12%, rgba(184,154,85,.18), transparent 22%),
+        linear-gradient(90deg, #f7f5f4 0%, #f3f0f1 45%, #e7ebf1 100%);
+      overflow: hidden;
+    }
+
+    .hero-copy {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: clamp(42px, 8vw, 104px) clamp(24px, 6vw, 78px);
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 820px;
+      font-size: clamp(42px, 6vw, 92px);
+      line-height: 1.03;
+      font-weight: 850;
+      color: var(--black);
+      word-break: keep-all;
+      overflow-wrap: normal;
+    }
+
+    .hero-sub {
+      margin: 28px 0 0;
+      max-width: 620px;
+      font-size: clamp(18px, 2vw, 24px);
+      line-height: 1.52;
+      color: #2d333d;
+      font-weight: 520;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 36px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 20px;
+      border: 1px solid var(--black);
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--navy), var(--navy-glow));
+      color: #fff;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .btn.secondary {
+      background: transparent;
+      color: var(--black);
+    }
+
+    .price-line {
+      margin-top: 26px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    .price-line strong { color: var(--rose-dark); }
+
+    .hero-media {
+      min-height: 660px;
+      background-image: url("senoid_brand_page_assets/products.jpg");
+      background-size: cover;
+      background-position: 48% center;
+      border-left: 1px solid rgba(217, 222, 231, .8);
+    }
+
+    .beauty-panel {
+      display: grid;
+      grid-template-columns: minmax(0, 1.28fr) minmax(300px, .72fr);
+      gap: clamp(24px, 5vw, 70px);
+      align-items: center;
+      margin-top: 42px;
+    }
+
+    .beauty-photo {
+      position: relative;
+      overflow: hidden;
+      border-radius: 8px;
+      min-height: 520px;
+      background: url("senoid_brand_page_assets/reverse12_age_return_concept.png") center / cover;
+      box-shadow: 0 28px 80px rgba(75, 61, 64, .18);
+    }
+    .beauty-photo::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 45%, rgba(16,17,20,.42));
+    }
+    .beauty-caption {
+      position: absolute;
+      left: 22px;
+      right: 22px;
+      bottom: 20px;
+      z-index: 1;
+      color: #fff;
+      line-height: 1.55;
+      font-size: 14px;
+    }
+
+    .beauty-copy {
+      display: grid;
+      gap: 18px;
+    }
+
+    .sensory-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 10px;
+    }
+    .sensory {
+      display: grid;
+      grid-template-columns: 46px 1fr;
+      gap: 16px;
+      align-items: start;
+      padding: 18px;
+      border: 1px solid rgba(217, 222, 231, .9);
+      border-radius: var(--radius);
+      background: var(--glass);
+      backdrop-filter: blur(14px);
+    }
+    .sensory span {
+      width: 46px;
+      height: 46px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      background: #fff;
+      color: var(--rose-dark);
+      font-weight: 850;
+      box-shadow: 0 10px 26px rgba(184, 154, 85, .14);
+    }
+    .sensory strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 17px;
+    }
+    .sensory p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.62;
+      font-size: 14px;
+    }
+
+    .section {
+      padding: clamp(64px, 9vw, 118px) clamp(20px, 5vw, 64px);
+    }
+
+    .section-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+
+    .section h2 {
+      margin: 0;
+      max-width: 840px;
+      font-size: clamp(32px, 4.2vw, 62px);
+      line-height: 1.06;
+      font-weight: 850;
+    }
+
+    .section-lead {
+      margin: 18px 0 0;
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.72;
+    }
+
+    .proof-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 34px;
+    }
+    .proof {
+      background: var(--soft);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 22px;
+      min-height: 156px;
+    }
+    .proof strong {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+    .proof p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.66;
+      font-size: 15px;
+    }
+
+    .tech {
+      background: #fff;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .tech-layout {
+      display: grid;
+      grid-template-columns: .86fr 1.14fr;
+      gap: clamp(26px, 4vw, 54px);
+      align-items: center;
+      margin-top: 38px;
+    }
+
+    .tech-card {
+      background: #f8f9fb;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .tech-card img {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+    }
+
+    .video-box {
+      background: #111217;
+      color: #fff;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .video-frame {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 306px;
+      aspect-ratio: 16 / 9;
+      padding: 28px;
+      background:
+        linear-gradient(135deg, rgba(14,16,22,.18), rgba(14,16,22,.1)),
+        url("senoid_brand_page_assets/video_poster.jpg") center / cover;
+    }
+    .video-frame::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(8, 10, 14, .44);
+    }
+    .video-link {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      gap: 16px;
+      justify-items: center;
+      text-align: center;
+      color: #fff;
+    }
+    .play-mark {
+      width: 88px;
+      height: 62px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      background: #ff0033;
+      color: #fff;
+      box-shadow: 0 14px 38px rgba(255,0,51,.28);
+    }
+    .play-mark svg {
+      width: 32px;
+      height: 32px;
+      margin-left: 4px;
+      display: block;
+    }
+    .video-link strong {
+      font-size: 24px;
+      text-shadow: 0 2px 18px rgba(0,0,0,.34);
+    }
+    .video-link span {
+      color: #dce2eb;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+    .video-copy {
+      padding: 22px;
+    }
+    .video-copy strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 18px;
+    }
+    .video-copy p {
+      margin: 0;
+      color: #cbd1da;
+      line-height: 1.65;
+      font-size: 15px;
+    }
+
+    .products {
+      background:
+        linear-gradient(180deg, #f7f3f4, #f2f4f7);
+    }
+
+    .product-list {
+      margin-top: 36px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .product {
+      background: var(--soft);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 24px;
+      min-height: 242px;
+    }
+    .product h3 {
+      margin: 0 0 12px;
+      font-size: 21px;
+      line-height: 1.25;
+    }
+    .product p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    .flow {
+      background: var(--black);
+      color: #fff;
+    }
+    .flow .section-lead { color: #c9ced6; }
+    .flow-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1px;
+      margin-top: 36px;
+      background: rgba(255,255,255,.18);
+      border: 1px solid rgba(255,255,255,.18);
+    }
+    .flow-step {
+      background: #0a1d3d;
+      padding: 24px;
+      min-height: 170px;
+    }
+    .flow-step span {
+      color: var(--gold);
+      font-size: 13px;
+      font-weight: 800;
+    }
+    .flow-step strong {
+      display: block;
+      margin: 14px 0 8px;
+      font-size: 20px;
+    }
+    .flow-step p {
+      margin: 0;
+      color: #c9ced6;
+      line-height: 1.62;
+      font-size: 14px;
+    }
+
+    .notice {
+      margin-top: 34px;
+      color: #78808c;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .staff-fab {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 30;
+      min-width: 92px;
+      min-height: 42px;
+      border: 0;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--navy), var(--navy-glow));
+      color: #fff;
+      box-shadow: var(--shadow);
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(10, 12, 16, .62);
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal {
+      width: min(560px, 100%);
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .modal-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 22px;
+      border-bottom: 1px solid var(--line);
+    }
+    .modal-head strong {
+      font-size: 18px;
+    }
+    .close {
+      width: 34px;
+      height: 34px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      cursor: pointer;
+      font-size: 20px;
+      line-height: 1;
+    }
+    .modal-body {
+      padding: 22px;
+      display: grid;
+      gap: 14px;
+    }
+    label {
+      display: grid;
+      gap: 8px;
+      color: #363c46;
+      font-size: 13px;
+      font-weight: 750;
+    }
+    input, select, textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      min-height: 44px;
+      padding: 10px 12px;
+      color: var(--ink);
+      outline: none;
+    }
+    textarea {
+      min-height: 128px;
+      resize: vertical;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+    .modal-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 4px;
+    }
+    .result {
+      display: none;
+      gap: 10px;
+      padding-top: 6px;
+    }
+    .result.open { display: grid; }
+    .copy-status {
+      min-height: 20px;
+      color: var(--rose-dark);
+      font-size: 13px;
+      font-weight: 750;
+    }
+
+    @media (max-width: 900px) {
+      .nav-links a:not(.nav-cta) { display: none; }
+      .hero {
+        grid-template-columns: 1fr;
+        min-height: 0;
+      }
+      .hero-copy {
+        min-height: 70vh;
+        padding-top: 84px;
+      }
+      .hero-media {
+        min-height: 420px;
+        border-left: 0;
+        border-top: 1px solid var(--line);
+      }
+      .proof-grid,
+      .tech-layout,
+      .beauty-panel,
+      .product-list,
+      .flow-grid {
+        grid-template-columns: 1fr;
+      }
+      .beauty-photo { min-height: 460px; }
+      .flow-grid { gap: 1px; }
+      .modal-actions { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 520px) {
+      .brand span:last-child { display: none; }
+      .nav { padding: 14px 16px; }
+      .hero-copy { padding-left: 18px; padding-right: 18px; }
+      h1 {
+        max-width: 340px;
+        font-size: 44px;
+        line-height: 1.08;
+      }
+      .hero-sub {
+        font-size: 17px;
+        line-height: 1.62;
+      }
+      .section { padding-left: 18px; padding-right: 18px; }
+      .hero-actions { flex-direction: column; align-items: stretch; }
+      .btn { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <a class="brand" href="#top" aria-label="REVERSE12 SENOID">
+      <img src="senoid_brand_page_assets/reverse12_logo.png" alt="REVERSE12">
+      <span>SENOID LINE</span>
+    </a>
+    <nav class="nav-links" aria-label="페이지 이동">
+      <a href="#tech">기술</a>
+      <a href="#routine">3종 루틴</a>
+      <a href="#purchase">구매 흐름</a>
+      <a class="nav-cta" href="#purchase">상담하기</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-copy">
+        <h1>12년 전 피부를 떠올리는 홈케어</h1>
+        <p class="hero-sub">
+          REVERSE12는 오너의 리턴 케어 브랜드이고, SENOID는 네오 스피큘과 세놀리틱 콘셉트 성분을 결합한 3단계 상품 라인입니다.
+          피부결, 탄력감, 윤기 케어를 매일의 루틴으로 이어갑니다.
+        </p>
+        <div class="hero-actions">
+          <a class="btn" href="#tech">기술 확인하기</a>
+          <a class="btn secondary" href="#purchase">구매 흐름 보기</a>
+        </div>
+        <p class="price-line">
+          미스트, 에센스, 크림 3종 루틴을 <strong>15만원대</strong>로 시작하는 프리미엄 홈에스테틱 콘셉트.
+        </p>
+      </div>
+      <div class="hero-media" role="img" aria-label="REVERSE12 SENOID 3종 제품 이미지"></div>
+    </section>
+
+    <section class="section">
+      <div class="section-inner">
+        <h2>기술은 신뢰로, 이미지는 갖고 싶은 감각으로</h2>
+        <p class="section-lead">
+          화장품은 설명만으로 팔리지 않습니다. 기술 신뢰와 함께 피부결, 윤기, 루틴의 감각이 한 화면에서 느껴져야 합니다.
+        </p>
+        <div class="beauty-panel">
+          <div class="beauty-photo" role="img" aria-label="시간의 흐름을 되돌리는 듯한 스킨케어 콘셉트 이미지">
+            <div class="beauty-caption">직접적인 효능 단정 대신, REVERSE12의 리턴 케어 콘셉트를 이미지로 전달합니다.</div>
+          </div>
+          <div class="beauty-copy">
+            <div class="proof-grid" style="grid-template-columns: 1fr;">
+              <article class="proof">
+                <strong>REVERSE12</strong>
+                <p>12년 전 피부를 떠올리는 리턴 케어 콘셉트의 오너 브랜드입니다.</p>
+              </article>
+            </div>
+            <div class="sensory-list">
+              <div class="sensory">
+                <span>01</span>
+                <div>
+                  <strong>보이는 윤기</strong>
+                  <p>제품의 과학적 설명보다 먼저, 고객이 기대하는 피부 인상을 이미지로 전달합니다.</p>
+                </div>
+              </div>
+              <div class="sensory">
+                <span>02</span>
+                <div>
+                  <strong>만져보고 싶은 피부결</strong>
+                  <p>스피큘 콘셉트는 자극보다 섬세한 관리감으로 설명해야 설득력이 높아집니다.</p>
+                </div>
+              </div>
+              <div class="sensory">
+                <span>03</span>
+                <div>
+                  <strong>고급 홈에스테틱</strong>
+                  <p>3종 세트를 하나의 프리미엄 루틴으로 보여주면 15만원대 가격이 훨씬 자연스러워집니다.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section tech" id="tech">
+      <div class="section-inner">
+        <h2>YTN 사이언스가 주목한 네오 스피큘 기술</h2>
+        <p class="section-lead">
+          기존 스피큘의 따가움과 전달 한계를 보완하기 위해 설계된 미세 전달 기술입니다.
+          고객용 표현은 화장품 범위 안에서 “사용감”과 “케어감” 중심으로 안전하게 정리합니다.
+        </p>
+        <div class="tech-layout">
+          <div class="video-box">
+            <a class="video-frame" href="https://www.youtube.com/watch?v=ciA7ZdZvsU0" target="_blank" rel="noopener">
+              <span class="video-link">
+                <span class="play-mark" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M8 5.5v13l11-6.5-11-6.5Z"></path>
+                  </svg>
+                </span>
+                <strong>YTN 사이언스에서 영상 보기</strong>
+                <span>일부 영상은 외부 사이트 embed 재생이 제한될 수 있어 새 창 링크로 연결합니다.</span>
+              </span>
+            </a>
+            <div class="video-copy">
+              <strong>아프지 않은 미세침, 네오 스피큘 기술</strong>
+              <p>영상은 기술 이해를 위한 참고자료입니다. 고객 안내 시에는 치료, 재생, 진피층 작용 등 의약적 표현을 피합니다.</p>
+            </div>
+          </div>
+          <div class="tech-card">
+            <img src="senoid_brand_page_assets/neo_spicule_detail.jpg" alt="네오 스피큘 기술 설명 자료">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section products" id="routine">
+      <div class="section-inner">
+        <h2>REVERSE12의 SENOID 3종 루틴</h2>
+        <p class="section-lead">
+          피부 상태와 사용 장면에 따라 미스트, 에센스, 크림을 연결해 홈케어 루틴으로 제안합니다.
+        </p>
+        <div class="product-list">
+          <article class="product">
+            <h3>Luminous Shine Mist</h3>
+            <p>첫 단계에서 피부에 산뜻한 수분감과 윤기감을 더하는 미스트 루틴입니다. 건조함이 느껴질 때 가볍게 사용할 수 있습니다.</p>
+          </article>
+          <article class="product">
+            <h3>Dia Firming Essence</h3>
+            <p>스피큘 콘셉트의 케어감을 중심으로 피부결과 탄력감을 함께 관리하는 에센스 루틴입니다.</p>
+          </article>
+          <article class="product">
+            <h3>Neo Dia Cream 2000000 Shot</h3>
+            <p>네오 스피큘과 세놀리틱 콘셉트를 담은 크림 루틴으로, 관리받은 듯한 마무리감을 제안합니다.</p>
+          </article>
+        </div>
+        <p class="notice">
+          본 페이지는 데모용 시안입니다. 제품명, 가격, 상세 성분, 사용법, 고지 문구는 회사 최종 검수 후 확정해야 합니다.
+        </p>
+      </div>
+    </section>
+
+    <section class="section flow" id="purchase">
+      <div class="section-inner">
+        <h2>브랜드 신뢰에서 주문 링크까지 이어지는 영업 흐름</h2>
+        <p class="section-lead">
+          고객에게는 회사 공식 브랜드 경험을 제공하고, 내부적으로는 영업자별 실적과 주문 데이터를 자동으로 묶는 구조입니다.
+        </p>
+        <div class="flow-grid">
+          <article class="flow-step">
+            <span>01</span>
+            <strong>SNS 발견</strong>
+            <p>인스타그램 사진, 릴스, 스토리에서 제품 호기심을 만듭니다.</p>
+          </article>
+          <article class="flow-step">
+            <span>02</span>
+            <strong>브랜드페이지 확인</strong>
+            <p>기술, 제품, 구매 흐름을 공식 페이지에서 확인하게 합니다.</p>
+          </article>
+          <article class="flow-step">
+            <span>03</span>
+            <strong>개인 카톡 상담</strong>
+            <p>영업담당자가 고객 고민을 듣고 제품 루틴을 제안합니다.</p>
+          </article>
+          <article class="flow-step">
+            <span>04</span>
+            <strong>개인 링크 주문</strong>
+            <p>사번 기반 링크로 고객이 직접 개인정보와 배송정보를 입력합니다.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <button class="staff-fab" id="openStaff">영업담당</button>
+
+  <div class="modal-backdrop" id="staffModal" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="staffTitle">
+      <div class="modal-head">
+        <strong id="staffTitle">영업담당 링크 생성 데모</strong>
+        <button class="close" id="closeStaff" aria-label="닫기">×</button>
+      </div>
+      <div class="modal-body">
+        <label>
+          사번 또는 담당자 코드
+          <input id="staffCode" placeholder="예: OW-CHOI-017">
+        </label>
+        <label>
+          제품 선택
+          <select id="product">
+            <option value="set">REVERSE12 SENOID 3종 세트</option>
+            <option value="mist">Luminous Shine Mist</option>
+            <option value="essence">Dia Firming Essence</option>
+            <option value="cream">Neo Dia Cream 2000000 Shot</option>
+          </select>
+        </label>
+        <label>
+          수량
+          <select id="qty">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+          </select>
+        </label>
+        <div class="modal-actions">
+          <button class="btn" id="makeLink">주문 링크 만들기</button>
+          <button class="btn secondary" id="copyText" type="button">카톡 문구 복사</button>
+        </div>
+        <div class="result" id="result">
+          <label>
+            고객용 링크
+            <input id="orderLink" readonly>
+          </label>
+          <label>
+            카톡 붙여넣기 문구
+            <textarea id="kakaoText" readonly></textarea>
+          </label>
+          <div class="copy-status" id="copyStatus"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const modal = document.getElementById('staffModal');
+    const openStaff = document.getElementById('openStaff');
+    const closeStaff = document.getElementById('closeStaff');
+    const makeLink = document.getElementById('makeLink');
+    const copyText = document.getElementById('copyText');
+    const result = document.getElementById('result');
+    const staffCode = document.getElementById('staffCode');
+    const product = document.getElementById('product');
+    const qty = document.getElementById('qty');
+    const orderLink = document.getElementById('orderLink');
+    const kakaoText = document.getElementById('kakaoText');
+    const copyStatus = document.getElementById('copyStatus');
+
+    const productNames = {
+      set: 'REVERSE12 SENOID 3종 세트',
+      mist: 'Luminous Shine Mist',
+      essence: 'Dia Firming Essence',
+      cream: 'Neo Dia Cream 2000000 Shot'
+    };
+
+    function openModal() {
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
+      staffCode.focus();
+    }
+
+    function closeModal() {
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden', 'true');
+      copyStatus.textContent = '';
+    }
+
+    function tokenFor(value) {
+      const source = `${value}-${product.value}-${qty.value}-${Date.now()}`;
+      let hash = 0;
+      for (let i = 0; i < source.length; i += 1) {
+        hash = ((hash << 5) - hash) + source.charCodeAt(i);
+        hash |= 0;
+      }
+      return `LK_${Math.abs(hash).toString(36).toUpperCase()}`;
+    }
+
+    function buildLink() {
+      const code = staffCode.value.trim();
+      if (!code) {
+        copyStatus.textContent = '사번 또는 담당자 코드를 먼저 입력하세요.';
+        staffCode.focus();
+        return;
+      }
+      const token = tokenFor(code);
+      const path = `${location.origin}${location.pathname}`;
+      const link = `${path.replace(/senoid_brand_page_demo\.html$/, '')}order/${token}`;
+      const item = productNames[product.value];
+      orderLink.value = link;
+      kakaoText.value = `고객님, REVERSE12 SENOID 주문 링크 안내드립니다.\n\n제품: ${item}\n수량: ${qty.value}\n\n아래 회사 공식 링크에서 제품과 수량을 확인하시고 성함, 연락처, 배송주소를 직접 입력해 주세요.\n${link}\n\n결제와 배송은 회사 공식 절차로 진행되고, 저는 담당자로서 사용법과 사후 상담을 도와드리겠습니다.`;
+      result.classList.add('open');
+      copyStatus.textContent = `데모 링크가 생성되었습니다. 내부 기록: ${code} -> ${token}`;
+    }
+
+    async function copyKakao() {
+      if (!kakaoText.value) buildLink();
+      if (!kakaoText.value) return;
+      try {
+        await navigator.clipboard.writeText(kakaoText.value);
+        copyStatus.textContent = '카톡 문구를 복사했습니다.';
+      } catch (error) {
+        kakaoText.select();
+        document.execCommand('copy');
+        copyStatus.textContent = '카톡 문구를 선택/복사했습니다.';
+      }
+    }
+
+    openStaff.addEventListener('click', openModal);
+    closeStaff.addEventListener('click', closeModal);
+    modal.addEventListener('click', (event) => {
+      if (event.target === modal) closeModal();
+    });
+    makeLink.addEventListener('click', buildLink);
+    copyText.addEventListener('click', copyKakao);
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && modal.classList.contains('open')) closeModal();
+    });
+  </script>
+</body>
+</html>

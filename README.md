@@ -28,3 +28,13 @@ D:\code\senoid-brand-commerce-poc\coding\senoid_brand_page_demo.html
 GitHub Pages에서는 루트 `index.html`이 위 데모 페이지로 자동 이동합니다.
 
 페이지 하단의 `영업담당` 버튼을 누르면 사번/담당자 코드 기반 주문 링크 생성 데모를 볼 수 있습니다.
+
+## 브랜드 컬러
+
+REVERSE12 브랜드 컬러 가이드는 아래 파일에 보관했습니다.
+
+```text
+docs/assets/reverse12_brand_color_guide.jpg
+```
+
+현재 데모의 네이비 계열은 `#01172f`, 보조 블루는 `#244b8d`를 기준으로 적용했습니다.
